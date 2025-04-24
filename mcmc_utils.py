@@ -88,8 +88,17 @@ def lnprob(params, func, x, y, yerr):
     Return chi-squared log likelihood, if the priors are satisfied.
     '''
     params = np.array(params)
+
+    #if np.any(params[2] > 0.15) or np.any(params[2] < 0.05):
+    #  return -np.inf
+
     if np.any(params > 1) or np.any(params < -1):
-        return -np.inf
+      return -np.inf
+
+    if np.any(np.isnan(func(x,*params))):
+      return -np.inf
+
+
     return -0.5*np.sum(((y-func(x, *params))/yerr)**2)
 
 
@@ -97,8 +106,8 @@ def mcmc(func, xdata, ydata, nwalkers=50, niter=500):
     '''
     Run MCMC on true xdata, ydata and return walker end locations.
     '''
-    yerr = 0.05*ydata
-    initial = (0, 0, 0)
+    yerr = 0.005
+    initial = (0, 0, 0.1)
     ndim = 3
     p0 = [np.array(initial) + 0.1*np.random.randn(ndim) for _ in range(nwalkers)]
 

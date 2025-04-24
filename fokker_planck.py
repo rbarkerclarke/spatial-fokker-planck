@@ -23,12 +23,19 @@ class FokkerPlanck:
         '''
         n = self.n
         mu = self.mu
+
+        # Swap values 
+        awm2 = amw
+        amw2 = awm
+        amw = amw2
+        awm = awm2
+
         if awm == 0:
             fx = sm*x
         else:
             fx = (((1+sm)*awm+(1+awm)*amw)/awm**2)*np.log(1+awm*x) - ((awm+amw)/awm)*x
-        phi = (1-2*n*mu)*np.log(x*(1-x)) - 2*n*fx - np.log(2*n)
-        rho = np.exp(-phi)
+        phi = (1-2*n*mu)*np.log(x*(1-x)) - 2*n*fx 
+        rho = 2*n*np.exp(-phi)
         return rho
 
 
@@ -50,7 +57,7 @@ class FokkerPlanck:
         rho = self.fokker_planck(x, awm, amw, sm)
         rho = rho / max(rho)
         rho[rho < 1e-31] = 0
-        rho[rho > 1e31] = 1e31
+        rho[rho > 1e31] = 1e31        
         return rho
 
 
