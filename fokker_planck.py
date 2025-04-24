@@ -25,11 +25,8 @@ class FokkerPlanck:
         mu = self.mu
 
         # Swap values 
-        awm2 = amw
-        amw2 = awm
-        amw = amw2
-        awm = awm2
-
+        #
+        
         if awm == 0:
             fx = sm*x
         else:
